@@ -6,7 +6,7 @@
 </p>
 
 ## Introduction
-- In this repository will be explained how to import audio files in matlab, filter, amplify, represent them and finally generate output audio files processed.
+In this repository will be explained how to import audio files in matlab, filter, amplify, represent them and finally generate output audio files processed.
 
 For this example an audio signal obtained from the NOAA-18 satellite will be used.
 The characteristics of the audio signal are the following:
@@ -18,8 +18,10 @@ The output audio data rate that matlab will return is by default programmed to 4
 ## Starting with matlab
 There are two scripts in matlab code, *SignalProcess.m* and *Main.m*.
 
-<br>
-<center><strong><font size="+2">Explaining SignalProcess.m</font></strong></center>
+<!-- <br>
+<center><strong><font size="+2">Explaining SignalProcess.m</font></strong></center> -->
+
+ ### Explaining SignalProcess.m
 
 ##### Description:
 - This script loads the audio into matlab as a vector variable with the samples, then takes two segments of the original audio file with a duration of 5 seconds and represents them in time and frequency. Its important to say that one of the segments are very noisy and the other one is very clearly. The objetive is to delete the noise of the noisy signal.
@@ -56,7 +58,9 @@ Now the second figure (Figure 2, on matlab) represents the filtered signals.
 Finally you can hear the raw samples and the processed samples and test it by yourself.
 
 
-<center><strong><font size="+2">Explaining Main.m</font></strong></center>
+<!-- <center><strong><font size="+2">Explaining Main.m</font></strong></center> -->
+
+### Explaining Main.m
 
 ##### Description:
 
