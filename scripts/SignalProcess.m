@@ -77,7 +77,7 @@ soshi = zp2sos(zhi,phi,khi);
 sgood_filtered = sosfilt(soshi,sgood_filtered);
 snoise_filtered = sosfilt(soshi,snoise_filtered);
 
-% Anti Bandpass filter
+% Bandstop filter
 %[B,A] = butter(5,fn_bandstopcut, 'stop');
 %sgood_filtered = filter(B, A, sgood_filtered);
 %snoise_filtered = filter(B, A, snoise_filtered);
