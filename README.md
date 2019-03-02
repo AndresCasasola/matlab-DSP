@@ -2,7 +2,7 @@
 # Signal Processing with Matlab
 
 <p align="center">
-  <img width="400" height="150" src="https://github.com/AndresCasasola/Matlab-SignalProcessing/raw/master/resources/images/matlab.png">
+  <img width="450" height="250" src="https://github.com/AndresCasasola/Matlab-SignalProcessing/raw/master/resources/images/intro.jpg">
 </p>
 
 ## Introduction
