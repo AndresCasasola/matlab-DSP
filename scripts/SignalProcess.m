@@ -1,23 +1,27 @@
 [s,fs] = audioread('signal.wav');
-t = [0:1/fs:5-1/fs]; % fs = 48000, se resta 5-1/fs para que sean 240000 valores de tiempo (5s)
+t = [0:1/fs:5-1/fs];        % 5-1/fs to get 240000 time values (5s)
 f = fs*[0:(240000/2)]/240000;
 
 % DEFINITION OF PARAMETERS
 % Samples selection
-sgood_seconds = 420;     % 420s = 7min
-sgood_width = 5;         % 5s signal width (240000 samples)
-snoise_seconds = 175;    % 175s = 2min 55s
-snoise_width = 5;        % 5s signal width (240000 samples)
+sgood_seconds = 420;        % 420s = 7min
+sgood_width = 5;            % 5s signal width (240000 samples)
+snoise_seconds = 175;       % 175s = 2min 55s
+snoise_width = 5;           % 5s signal width (240000 samples)
 % Filtering and gain
-G = 2;  % Gain
+G = 2;                      % Gain
+f_lowcut = 2500;            % Lowpass filter cutoff frequency
+f_highcut = 2300;           % Highpass filter cutoff frequency
+f_bandpasscut = [2000 2800];% Bandpass filter cutoff frequencies
+f_bandstopcut = [80 2200];  % Bandstop filter cutoff frequencies
 
 sgood_low = fs * sgood_seconds;
 sgood_high = sgood_low + fs * sgood_width;
 snoise_low = fs * snoise_seconds;
 snoise_high = snoise_low + fs * snoise_width;
 
-sgood = s(sgood_low : sgood_high-1);    % 5 segundos de señal (240000 samples) centradas en el centro
-snoise = s(snoise_low : snoise_high-1);    % 5 segundos de señal (240000 samples) desde 3s
+sgood = s(sgood_low : sgood_high-1);       % Get signal segment (sgood) from original signal (s)
+snoise = s(snoise_low : snoise_high-1);    % Get signal segment (snoise) from original signal (s)
 
 % PLOT RAW SIGNAL
 figure(1);
@@ -37,7 +41,6 @@ plot(f, P1, '-r');
 title('Signal good transform');
 xlabel('Frequency (Hz)');
 ylabel('Amplitude');
-
 % Signal noise
 subplot(2,2,2);
 plot(t, snoise, '-b');
@@ -55,14 +58,12 @@ title('Signal noise transform');
 xlabel('Frequency (Hz)');
 ylabel('Amplitude');
 
-
 % FILTERING AND AMPLIFYING
-% Low pass filter parameters
-f_lowcut = 2500;                  % 3000 Hz for lowpass filter cut frequency
-fn_lowcut = f_lowcut/(fs/2);      % Normalize with sampling frequency
-% Band pass filter parameters
-f_bandcut = [80 2200];            % 3000 Hz for lowpass filter cut frequency
-fn_bandcut = f_bandcut/(fs/2);    % Normalize with sampling frequency
+% Filters normalized frequency calculation
+fn_lowcut = f_lowcut/(fs/2);      
+fn_highcut = f_highcut/(fs/2);
+fn_bandpasscut = f_bandpasscut/(fs/2);
+fn_bandstopcut = f_bandstopcut/(fs/2);
 
 % Lowpass filter
 [zhi,phi,khi] = butter(20,fn_lowcut,'low'); %% zhi: zeros, phi: poles, k: gain
@@ -71,18 +72,18 @@ sgood_filtered = sosfilt(soshi,sgood);
 snoise_filtered = sosfilt(soshi,snoise);
 
 % Highpass filter
-%[zhi,phi,khi] = butter(20,fn,'high'); %% zhi: zeros, phi: poles, k: gain
-%soshi = zp2sos(zhi,phi,khi);
-%sgood_filtered = sosfilt(soshi,sgood_filtered);
-%snoise_filtered = sosfilt(soshi,snoise_filtered);
+[zhi,phi,khi] = butter(20,fn_highcut,'high'); %% zhi: zeros, phi: poles, k: gain
+soshi = zp2sos(zhi,phi,khi);
+sgood_filtered = sosfilt(soshi,sgood_filtered);
+snoise_filtered = sosfilt(soshi,snoise_filtered);
 
 % Anti Bandpass filter
-[B,A] = butter(5,fn_bandcut, 'stop');
-sgood_filtered = filter(B, A, sgood_filtered);
-snoise_filtered = filter(B, A, snoise_filtered);
+%[B,A] = butter(5,fn_bandstopcut, 'stop');
+%sgood_filtered = filter(B, A, sgood_filtered);
+%snoise_filtered = filter(B, A, snoise_filtered);
 
 % Bandpass filter
-%[B,A] = butter(5,fn_bandcut, 'bandpass');
+%[B,A] = butter(5,fn_bandpasscut, 'bandpass');
 %sgood_filtered = filter(B, A, sgood_filtered);
 %snoise_filtered = filter(B, A, snoise_filtered);
 
@@ -108,7 +109,6 @@ plot(f, P1, '-r');
 title('Signal good filtered transform');
 xlabel('Frequency (Hz)');
 ylabel('Amplitude');
-
 % Signal noise filtered
 subplot(2,2,2);
 plot(t, snoise_filtered, '-b');
