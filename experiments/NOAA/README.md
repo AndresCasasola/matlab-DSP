@@ -1,12 +1,12 @@
 
-# Signal Processing with Matlab
+# NOAA satellite Signal Processing
 
 <p align="center">
   <img width="450" height="250" src="https://github.com/AndresCasasola/Matlab-SignalProcessing/raw/master/resources/images/intro.jpg">
 </p>
 
 ## Introduction
-In this repository will be explained how to import audio files in matlab, filter, amplify, represent them and finally generate output audio files processed.
+In this experiment will be explained how to import audio files in matlab, filter, amplify, represent them and finally generate output audio files processed.
 
 For this example an audio signal obtained from the NOAA-18 satellite will be used.
 The characteristics of the audio signal are the following:
